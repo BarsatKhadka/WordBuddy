@@ -41,6 +41,30 @@ function Homepage() {
   
     return (
       <div className="min-h-screen bg-gradient-to-b from-cyan-400 via-pink-300 to-yellow-200 relative overflow-hidden">
+        <div className="absolute inset-0 overflow-hidden">
+        {/* Floating Palm Trees */}
+        {[...Array(8)].map((_, i) => (
+          <motion.div
+            key={`palm-${i}`}
+            className="absolute"
+            style={{
+              bottom: '0',
+              left: `${(i * 15)}%`,
+            }}
+            animate={{
+              y: [0, -10, 0],
+              rotate: [-5, 5, -5],
+            }}
+            transition={{
+              duration: 3,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          >
+            <span className="text-6xl">🌴</span>
+          </motion.div>
+        ))}
+        </div>
         
         <div className="container mx-auto px-4 py-8 relative z-10">
           <h1 className="text-8xl md:text-9xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-500 via-yellow-500 to-cyan-500">
@@ -100,6 +124,7 @@ function Homepage() {
             </motion.div>
           )}
         </AnimatePresence>
+
       </div>
     );
   }
