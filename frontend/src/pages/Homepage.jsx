@@ -163,6 +163,11 @@ function Homepage() {
                     <div className="text-center mt-2 text-lg font-semibold text-purple-600">
                       {settings.age} years old
                     </div>
+                    <div>
+                  <label className="block text-lg text-indigo-700 mb-3">
+                    Your Location:
+                  </label>
+                  </div>
                   </div>
                 </div>
               </motion.div>
