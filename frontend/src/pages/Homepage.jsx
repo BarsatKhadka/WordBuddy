@@ -167,7 +167,33 @@ function Homepage() {
                   <label className="block text-lg text-indigo-700 mb-3">
                     Your Location:
                   </label>
+                  <div className="grid grid-cols-2 gap-3">
+                    <input
+                      type="text"
+                      name="city"
+                      placeholder="City"
+                      value={settings.location.city}
+                      onChange={handleChange}
+                      className="border-2 border-indigo-100 rounded-xl px-4 py-3 focus:outline-none focus:border-indigo-300 transition-colors"
+                    />
+                    <input
+                      type="text"
+                      name="country"
+                      placeholder="Country"
+                      value={settings.location.country}
+                      onChange={handleChange}
+                      className="border-2 border-indigo-100 rounded-xl px-4 py-3 focus:outline-none focus:border-indigo-300 transition-colors"
+                    />
+                  </div>  
                   </div>
+                  <input
+                    type="checkbox"
+                    id="dyslexicMode"
+                    name="dyslexicMode"
+                    checked={settings.dyslexicMode}
+                    onChange={handleChange}
+                    className="h-5 w-5 text-indigo-600 focus:ring-indigo-400 border-gray-300 rounded"
+                  />
                   </div>
                 </div>
               </motion.div>
