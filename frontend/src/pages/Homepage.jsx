@@ -64,6 +64,29 @@ function Homepage() {
             <span className="text-6xl">🌴</span>
           </motion.div>
         ))}
+        
+        {[...Array(6)].map((_, i) => (
+          <motion.div
+            key={`cloud-${i}`}
+            className="absolute"
+            style={{
+              top: `${(i * 20) + Math.random() * 10}%`,
+              left: `-20%`,
+            }}
+            animate={{
+              x: ['0vw', '120vw'],
+              opacity: [0.8, 1, 0.8],
+            }}
+            transition={{
+              duration: 8 + Math.random() * 4, // Faster clouds!
+              repeat: Infinity,
+              delay: i * 0.5,
+            }}
+          >
+            <span className="text-6xl">☁️</span>
+          </motion.div>
+        ))}
+
         </div>
         
         <div className="container mx-auto px-4 py-8 relative z-10">
