@@ -1,6 +1,6 @@
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import Learning from './pages/Learning';
-import Homepage from './pages/Hompage';
+import Homepage from './pages/Homepage';
 
 function App() {
 

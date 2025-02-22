@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Settings as SettingsIcon } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -9,6 +9,20 @@ function Homepage() {
       location: { city: '', country: '' },
       dyslexicMode: false,
     });
+
+    useEffect(() => {
+        if (settings.dyslexicMode) {
+          document.documentElement.classList.add('dyslexic-font');
+          document.documentElement.style.setProperty(
+            'font-family',
+            "'OpenDyslexic', sans-serif",
+            'important'
+          );
+        } else {
+          document.documentElement.classList.remove('dyslexic-font');
+          document.documentElement.style.removeProperty('font-family');
+        }
+      }, [settings.dyslexicMode]);
   
     const handleChange = (e) => {
       const { name, value, type, checked } = e.target;
@@ -89,3 +103,5 @@ function Homepage() {
       </div>
     );
   }
+
+  export default Homepage;
