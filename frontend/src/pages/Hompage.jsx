@@ -1,3 +1,9 @@
-export default function Hompage() {
-    
+function Homepage() {
+    return(
+        <>
+        <p>hdfjkahsdkfj</p>
+        </>
+    )
 }
+
+export default Homepage;

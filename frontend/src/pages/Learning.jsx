@@ -1,3 +1,10 @@
-export default function Learning() {
+ function Learning() {
+    return(
+    <div>
+        learn page
+    </div>
+    )
     
 }
+
+export default Learning;
