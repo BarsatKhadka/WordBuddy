@@ -33,7 +33,7 @@ function Homepage() {
             WordBuddy
           </h1>
           <p className="text-4xl md:text-5xl font-bold text-white">
-            Miami's Super Fun Word Adventure!
+            Super Fun Word Adventure!
           </p>
         </div>
   
