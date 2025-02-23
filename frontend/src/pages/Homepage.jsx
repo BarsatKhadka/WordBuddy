@@ -7,31 +7,40 @@ import { Link } from 'react-router-dom';
 function Homepage() {
     const [showSettings, setShowSettings] = useState(false);
     const [settings, setSettings] = useState(() => {
-      const savedSettings = localStorage.getItem('wordMagicSettings');
-      return savedSettings ? JSON.parse(savedSettings) : {
+      try {
+        const savedSettings = localStorage.getItem('wordMagicSettings');
+        if (savedSettings) {
+          const parsedSettings = JSON.parse(savedSettings);
+          if (parsedSettings.dyslexicMode) {
+            document.documentElement.classList.add('dyslexic-font');
+            document.documentElement.style.setProperty('font-family', "'OpenDyslexic', sans-serif", 'important');
+          }
+          return parsedSettings;
+        }
+      } catch (error) {
+        console.error('Error loading settings:', error);
+      }
+      return {
         age: 7,
         location: { city: '', country: '' },
         dyslexicMode: false
       };
-    }); 
-
+    });
+  
     useEffect(() => {
-      localStorage.setItem('wordMagicSettings', JSON.stringify(settings));
-    }, [settings.dyslexicMode, settings]);
-
-    useEffect(() => {
+      try {
         if (settings.dyslexicMode) {
           document.documentElement.classList.add('dyslexic-font');
-          document.documentElement.style.setProperty(
-            'font-family',
-            "'OpenDyslexic', sans-serif",
-            'important'
-          );
+          document.documentElement.style.setProperty('font-family', "'OpenDyslexic', sans-serif", 'important');
         } else {
           document.documentElement.classList.remove('dyslexic-font');
           document.documentElement.style.removeProperty('font-family');
         }
-      }, [settings.dyslexicMode]);
+        localStorage.setItem('wordMagicSettings', JSON.stringify(settings));
+      } catch (error) {
+        console.error('Error applying settings:', error);
+      }
+    }, [settings]);
   
     const handleChange = (e) => {
       const { name, value, type, checked } = e.target;
@@ -118,7 +127,45 @@ function Homepage() {
           </motion.div>
         ))}
 
+<div className="flex justify-center mt-16">
+          <motion.div
+            whileHover={{ scale: 1.1, rotate: [0, -5, 5, 0] }}
+            whileTap={{ scale: 0.9 }}
+          >
+            <Link to="/learn" className="relative group block">
+              <div className="absolute -inset-2 bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-600 rounded-full blur-lg opacity-75 group-hover:opacity-100 transition duration-200 animate-pulse"></div>
+              <div className="relative px-20 py-10 bg-gradient-to-r from-cyan-400 via-pink-500 to-yellow-400 rounded-full border-4 border-white">
+                <div className="flex items-center gap-4">
+                  <span className="text-5xl">🎮</span>
+                  <span className="text-4xl font-bold text-white" 
+                    style={{ 
+                      fontFamily: settings.dyslexicMode ? "'OpenDyslexic', cursive" : "'Comic Sans MS', cursive",
+                      textShadow: '3px 3px 0px #ff1493'
+                    }}>
+                    Let's Play!
+                  </span>
+                  <span className="text-5xl">✨</span>
+                </div>
+              </div>
+            </Link>
+          </motion.div>
         </div>
+
+
+        <div className="flex justify-center gap-8 mt-16">
+          {['🏆', '🌟', '🎨', '🎯'].map((emoji, i) => (
+            <motion.div
+              key={i}
+              className="bg-white/30 p-4 rounded-full backdrop-blur-sm"
+              animate={{ y: [0, -10, 0] }}
+              transition={{ duration: 2, delay: i * 0.2, repeat: Infinity }}
+            >
+              <span className="text-4xl">{emoji}</span>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
         
         <div className="container mx-auto px-4 py-8 relative z-10">
         <motion.div
@@ -151,7 +198,10 @@ function Homepage() {
             <span>🌺</span>
           </motion.div>
         </motion.div>
+        
         </div>
+
+        
 
         
   
