@@ -18,6 +18,7 @@ function Learning() {
     const [nativeLanguage, setNativeLanguage] = useState(null);
     
 
+    // api endpoints sends a json with greeting, word, it's spanish translation, rhyme and phonetics
     const getNewWord = async () => {
         setLoadingState(true);
         try {
@@ -71,6 +72,7 @@ function Learning() {
         }
       };
 
+      // convert text into speech
       const speakText = async (text) => {
         try {
           const useSpanishVoice = 
@@ -104,6 +106,32 @@ function Learning() {
           setErrorMessage('Error with text-to-speech. Please try again.');
         }
       };
+
+// takes the audio and changes it into text
+  const processAudio = async (audioBlob) => {
+    try {
+      const formData = new FormData();
+      formData.append('audio', audioBlob, 'audio.wav');
+      formData.append('language', selectedLanguage);
+
+      const response = await fetch('http://localhost:5000/api/process-speech', {
+        method: 'POST',
+        body: formData
+      });
+
+      if (!response.ok) throw new Error('Failed to transcribe audio');
+      const data = await response.json();
+      handleSpeechResult(data.text.toLowerCase());
+    } catch (error) {
+      console.error('Error processing audio:', error);
+      const errorMsg = nativeLanguage === 'spanish' 
+        ? 'Error al procesar el habla. Por favor, inténtalo de nuevo.' 
+        : 'Error processing speech. Please try again.';
+      setErrorMessage(errorMsg);
+    } finally {
+      setIsRecording(false);
+    }
+  };
 
     return(
     <div>
