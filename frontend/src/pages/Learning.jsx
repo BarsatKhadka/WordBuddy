@@ -34,6 +34,7 @@ function Learning() {
     };
   });
   const [rhyme, setRhyme] = useState('');
+  const abortControllerRef = useRef(null);
 
   useEffect(() => {
     const loadSettings = () => {
@@ -222,6 +223,9 @@ function Learning() {
   };
 
   const skipLetter = () => {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
     if (showPhonetic) {
       // If we're in phonetic mode
       if (currentLetterIndex === phoneticBreakdown.length - 1) {
@@ -256,6 +260,9 @@ function Learning() {
   };
 
   const skipWord = async () => {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
     const skipText = nativeLanguage === 'spanish' 
       ? "Vamos a intentar con una palabra diferente." 
       : "Let's try a different word.";
@@ -313,6 +320,12 @@ function Learning() {
 
   const speakText = async (text) => {
     try {
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+      abortControllerRef.current = new AbortController();
+      const { signal } = abortControllerRef.current;
+
       const useSpanishVoice = 
         (text === currentWord && selectedLanguage === 'spanish') ||
         text === '¡Perfecto!' ||
@@ -328,7 +341,8 @@ function Learning() {
         body: JSON.stringify({
           text,
           useSpanishVoice
-        })
+        }),
+        signal
       });
 
       if (!response.ok) {
@@ -340,8 +354,10 @@ function Learning() {
       await audio.play();
       setErrorMessage(''); // Clear any existing error message
     } catch (error) {
-      console.error('Error with text-to-speech:', error);
-      setErrorMessage('Error with text-to-speech. Please try again.');
+      if (error.name !== 'AbortError') {
+        console.error('Error with text-to-speech:', error);
+        setErrorMessage('Error with text-to-speech. Please try again.');
+      }
     }
   };
 
