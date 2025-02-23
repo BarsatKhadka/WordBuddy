@@ -143,8 +143,22 @@ const LearningUI = ({
               </motion.div>
             )}
           </motion.div>
+
+          
         );
       };
   };
+
+  return (
+    <div className={`min-h-screen bg-gradient-to-b from-sky-200 via-purple-100 to-pink-100 relative overflow-hidden p-8 ${dyslexicMode ? 'dyslexic-font' : ''}`}>
+      <motion.div 
+        className="absolute top-10 left-10"
+        animate={{ x: [0, 20, 0] }}
+        transition={{ duration: 4, repeat: Infinity }}
+      >
+        <Cloud className="w-16 h-16 text-white" />
+      </motion.div>
+      </div>
+  )
 
 }
