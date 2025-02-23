@@ -46,7 +46,7 @@ function Homepage() {
           <h1 
             className="text-8xl md:text-9xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-500 via-yellow-500 to-cyan-500"
             style={{ 
-              fontFamily: settings.dyslexicMode ? "'OpenDyslexic', cursive" : "'Comic Sans MS', cursive",
+              fontFamily: settings.dyslexicMode ? "'OpenDyslexic', sans-serif" : "'Bubblegum Sans', cursive",
               textShadow: '4px 4px 0px #ff69b4, 8px 8px 0px #4169e1'
             }}
           >
@@ -59,7 +59,7 @@ function Homepage() {
           >
             <span>🌺</span>
             <p style={{ 
-              fontFamily: settings.dyslexicMode ? "'OpenDyslexic', cursive" : "'Comic Sans MS', cursive",
+              fontFamily: settings.dyslexicMode ? "'OpenDyslexic', sans-serif" : "'Fredoka', sans-serif",
               textShadow: '3px 3px 0px #ff1493'
             }}>
               Super Fun Word Adventure!
@@ -81,7 +81,7 @@ function Homepage() {
                   <span className="text-5xl">🎮</span>
                   <span className="text-4xl font-bold text-white" 
                     style={{ 
-                      fontFamily: settings.dyslexicMode ? "'OpenDyslexic', cursive" : "'Comic Sans MS', cursive",
+                      fontFamily: settings.dyslexicMode ? "'OpenDyslexic', sans-serif" : "'Fredoka', sans-serif",
                       textShadow: '3px 3px 0px #ff1493'
                     }}>
                     Let's Play!
