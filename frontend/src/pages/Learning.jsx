@@ -116,9 +116,6 @@ function Learning() {
           ? `The word "${data.word}" means "${data.translation}" in English.`
           : `La palabra "${data.word}" significa "${data.translation}" en español.`;
         
-        setTimeout(async () => {
-          await speakText(translationMessage);
-        }, 1500);
       }
 
     } catch (error) {
