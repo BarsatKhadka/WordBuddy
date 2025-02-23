@@ -62,7 +62,7 @@ function Homepage() {
               textShadow: '4px 4px 0px #ff69b4, 8px 8px 0px #4169e1'
             }}
           >
-            WordBuddy
+            WordBuddy.AI
           </h1>
           <motion.div 
             className="flex justify-center items-center gap-4 text-4xl md:text-5xl font-bold text-white"
