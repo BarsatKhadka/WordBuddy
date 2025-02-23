@@ -142,6 +142,20 @@ app.post('/api/text-to-speech', async (req, res) => {
   }
 });
 
+app.post('/api/settings', (req, res) => {
+  try {
+    const { age, city } = req.body;
+    
+    teacherPrompt.updateSettings(age, city);
+    
+    res.json({ success: true, message: 'Settings updated successfully' });
+  } catch (error) {
+    console.error('Error updating settings:', error);
+    res.status(500).json({ error: 'Failed to update settings' });
+  }
+});
+
+
 app.listen(port, ()=>{
     console.log(`Server is running on port ${port}`);
 })
