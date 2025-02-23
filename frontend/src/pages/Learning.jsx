@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 
 function Learning() {
-
+    const [isGameStarted, setIsGameStarted] = useState(false);
     const [currentWord, setCurrentWord] = useState('');
     const [translation, setTranslation] = useState('');
     const [greeting, setGreeting] = useState('');
@@ -170,7 +170,103 @@ function Learning() {
       setErrorMessage(errorMsg);
     }
   };
-  
+
+  // Starts the actual game
+  const startGame = async () => {
+    setIsGameStarted(true);
+    await getNewWord();
+  };
+
+  // handling the speaking and validating logic
+  const handleSpeechResult = (spokenText) => {
+    if (gameState === 'spelling') {
+      if (showPhonetic) {
+        const currentPhoneme = phoneticBreakdown[currentLetterIndex];
+        if (spokenText.includes(currentPhoneme)) {
+          if (currentLetterIndex === phoneticBreakdown.length - 1) {
+            setGameState('wholeWord');
+            const successMsg = selectedLanguage === 'spanish' 
+              ? `¡Perfecto!` 
+              : `Perfect! Now say the whole word: ${currentWord}`;
+            speakText(successMsg);
+          } else {
+            setCurrentLetterIndex(prev => prev + 1);
+            const nextMsg = selectedLanguage === 'spanish' 
+              ? `¡Perfecto!` 
+              : `Perfect! Try pronouncing the next sound: ${phoneticBreakdown[currentLetterIndex + 1]}`;
+            speakText(nextMsg);
+          }
+        } else {
+          const tryAgainMsg = selectedLanguage === 'spanish' 
+            ? `¡Inténtalo!` 
+            : `Try again! Say the sound ${currentPhoneme}`;
+          speakText(tryAgainMsg);
+        }
+      } else {
+        const currentLetter = currentWord[currentLetterIndex];
+        if (spokenText.includes(currentLetter)) {
+          if (currentLetterIndex === currentWord.length - 1) {
+            setGameState('wholeWord');
+            const successMsg = selectedLanguage === 'spanish' 
+              ? `¡Perfecto!` 
+              : `Perfect! Now say the whole word: ${currentWord}`;
+            speakText(successMsg);
+          } else {
+            setCurrentLetterIndex(prev => prev + 1);
+            const nextMsg = selectedLanguage === 'spanish' 
+              ? `¡Perfecto!` 
+              : `Perfect! Try pronouncing the next letter: ${currentWord[currentLetterIndex + 1]}`;
+            speakText(nextMsg);
+          }
+        } else {
+          const tryAgainMsg = selectedLanguage === 'spanish' 
+            ? `¡Inténtalo!` 
+            : `Try again! Say the letter ${currentLetter}`;
+          speakText(tryAgainMsg);
+        }
+      }
+    } else if (gameState === 'wholeWord') {
+      if (spokenText.includes(currentWord)) {
+        setGameState('success');
+        
+        // First congratulate
+        const congratsMsg = selectedLanguage === 'spanish' 
+          ? `¡Excelente! Has deletreado y dicho ${currentWord} correctamente.` 
+          : `Excellent! You've spelled and said ${currentWord} correctly!`;
+        
+        // Speak congratulation and then the rhyme
+        speakText(congratsMsg).then(() => {
+          setTimeout(() => {
+            // Speak the rhyme after showing success message
+            speakText(rhyme).then(() => {
+              // After rhyme is spoken, get new word
+              setTimeout(getNewWord, 2000);
+            });
+          }, 1500);
+        });
+      } else {
+        if (!failedFirstAttempt) {
+          // First failed attempt at whole word - switch to phonetic mode
+          setFailedFirstAttempt(true);
+          setShowPhonetic(true);
+          setCurrentLetterIndex(0);
+          setGameState('spelling');
+          
+          const phoneticGuideMsg = selectedLanguage === 'spanish'
+            ? `Intentemos con los sonidos. Pronuncia este sonido: ${phoneticBreakdown[0]}`
+            : `Let's try breaking it down by sounds. Say this sound: ${phoneticBreakdown[0]}`;
+          speakText(phoneticGuideMsg);
+        } else {
+          // Second or later failure
+          const tryAgainWordMsg = selectedLanguage === 'spanish' 
+            ? `Inténtalo de nuevo. Di la palabra ${currentWord}` 
+            : `Try again! Say the word ${currentWord}`;
+          speakText(tryAgainWordMsg);
+        }
+      }
+    }
+  };
+
     return(
     <div>
         Learning page, coming soon....
