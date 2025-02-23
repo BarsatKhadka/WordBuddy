@@ -304,6 +304,27 @@ function Learning() {
   };
 
 
+  const handleNativeLanguageSelect = (language) => {
+    setNativeLanguage(language);
+    // Automatically set the target language as the opposite of native language
+    const targetLanguage = language === 'english' ? 'spanish' : 'english';
+    setSelectedLanguage(targetLanguage);
+    setLanguageSelectionStep(3); // Skip step 2 and go directly to step 3
+  };
+
+  const handleLanguageChange = (language) => {
+    setSelectedLanguage(language);
+    isFirstWord.current = true;
+  };
+
+  // skips the word fully
+  const skipWord = async () => {
+    const skipText = nativeLanguage === 'spanish' 
+      ? "Vamos a intentar con una palabra diferente." 
+      : "Let's try a different word.";
+    speakText(skipText);
+    setTimeout(getNewWord, 1500);
+  };
 
     return(
     <div>
