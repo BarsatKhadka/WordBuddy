@@ -195,10 +195,11 @@ function Homepage() {
                     onChange={handleChange}
                     className="h-5 w-5 text-indigo-600 focus:ring-indigo-400 border-gray-300 rounded"
                   />
-                  </div>
-                  <label htmlFor="dyslexicMode" className="ml-3 text-lg text-indigo-700">
+                   <label htmlFor="dyslexicMode" className="ml-3 text-lg text-indigo-700">
                     Dyslexic-Friendly Mode
                   </label>
+                  </div>
+                 
                   </div>
                 </div>
               </motion.div>
