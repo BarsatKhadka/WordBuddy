@@ -23,6 +23,7 @@ function Learning() {
   const [showPhonetic, setShowPhonetic] = useState(false);
   const [failedFirstAttempt, setFailedFirstAttempt] = useState(false);
   const [translation, setTranslation] = useState('');
+  const [isImageLoading, setIsImageLoading] = useState(true);
   
   const [stats, setStats] = useState(() => {
     const savedStats = localStorage.getItem('wordMagicStats');
@@ -391,7 +392,8 @@ function Learning() {
 
   const generateImage = async (story) => {
     try {
-      console.log(story)
+      setIsImageLoading(true);
+      console.log(story);
       const response = await fetch('https://api.openai.com/v1/images/generations', {
         method: 'POST',
         headers: {
@@ -415,6 +417,7 @@ function Learning() {
     } catch (error) {
       console.error('Error generating image:', error);
       setErrorMessage('Error generating story image.');
+      setIsImageLoading(false);
     }
   };
 
@@ -447,6 +450,7 @@ function Learning() {
       translation={translation}
       stats={stats}
       rhyme={rhyme}
+      isImageLoading={isImageLoading}
     />
   );
 }

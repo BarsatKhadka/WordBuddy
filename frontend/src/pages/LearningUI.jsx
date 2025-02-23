@@ -34,6 +34,7 @@ const LearningUI = ({
   gameState,
 }) => {
   const [showHandSignal, setShowHandSignal] = useState(false);
+  const [isImageLoading, setIsImageLoading] = useState(true);
 
   const HandSignalModal = ({ letter, onClose }) => {
     return (
@@ -455,21 +456,45 @@ const LearningUI = ({
                     </motion.div>
                   )}
 
-                  {storyImage && (
+                  {/* Enhanced Image or Skeleton Loader */}
+                  <div className="flex justify-center items-center">
+                    {isImageLoading && (
+                      <div className="relative w-full max-w-[1024px] aspect-square rounded-lg overflow-hidden">
+                        <div className="absolute inset-0 animate-shimmer bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200"></div>
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <div className="space-y-4 w-full px-8">
+                            {/* Skeleton header */}
+                            <div className="h-8 bg-gray-300 rounded-lg w-3/4 mx-auto animate-shimmer"></div>
+                            
+                            {/* Skeleton image placeholder */}
+                            <div className="h-64 bg-gray-300 rounded-lg w-full animate-shimmer"></div>
+                            
+                            {/* Skeleton text lines */}
+                            <div className="space-y-2">
+                              <div className="h-4 bg-gray-300 rounded w-5/6 animate-shimmer"></div>
+                              <div className="h-4 bg-gray-300 rounded w-4/6 animate-shimmer"></div>
+                              <div className="h-4 bg-gray-300 rounded w-3/6 animate-shimmer"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                    
                     <motion.div
-                      className="w-full space-y-4"
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: 'auto' }}
+                      className={`w-full max-w-[1024px] p-4 bg-white rounded-lg shadow-lg border border-gray-300 ${isImageLoading ? 'hidden' : ''}`}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: isImageLoading ? 0 : 1 }}
                       transition={{ duration: 0.5 }}
                     >
                       <img 
                         src={storyImage} 
                         alt="Story Illustration" 
-                        className="rounded-lg shadow-lg max-w-full h-auto mx-auto"
+                        className="rounded-lg shadow-md max-w-full h-auto mx-auto"
                         style={{ maxHeight: '300px', objectFit: 'contain' }}
+                        onLoad={() => setIsImageLoading(false)}
                       />
                     </motion.div>
-                  )}
+                  </div>
 
                   {errorMessage && (
                     <div className="text-red-500 text-center" style={getFontStyle()}>
