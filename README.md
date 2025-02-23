@@ -71,6 +71,15 @@ Built with:
 
 ## 🚀 **Future of WordBuddy.ai: Bridging Communication Gaps**  
 **Real-Time Accessibility with machine learning models on different sign languages such as ASL/BSL for Deaf Learners**  
+Our vision for WordBuddy goes beyond vocabulary. It’s about breaking communication barriers. In the future, we plan to integrate real-time machine learning models to support deaf learners by recognizing and translating sign languages like ASL (American Sign Language) and BSL (British Sign Language). 
+
+---
+
+## Challenges we ran into 
+One of the biggest hurdles was assigning clear roles. With everyone being full-stack developers, we all jumped into whatever needed doing. Whether it was debugging the backend, tweaking the UI, or fixing AI integrations. While it was great to have so much flexibility, it also led to some chaos as we tried to figure out who was doing what. In the end, we learned to communicate better and divide tasks more effectively, but it was definitely a learning curve!
+
+
+
 
 
 Our Team:
@@ -86,4 +95,4 @@ Kshitiz Neupane (https://www.linkedin.com/in/kshitiz-neupane-930571216)
 
 ---
 
- 🎥 [Watch Demo]  
+ 🎥 [Watch Demo]  (https://www.youtube.com/watch?v=DELud7Xqsaw)
