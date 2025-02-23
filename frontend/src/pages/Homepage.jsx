@@ -7,6 +7,7 @@ import Header from '../components/Header';
 import StartButton from '../components/StartButton';
 import AchievementBadges from '../components/AchievementBadges';
 import SettingsModal from '../components/SettingsModal';
+import { Link } from 'react-router-dom';
 
 function Homepage() {
   const [showSettings, setShowSettings] = useState(false);
