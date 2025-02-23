@@ -104,7 +104,7 @@ function Learning() {
       setFailedFirstAttempt(false);
       isFirstWord.current = false;
       setRhyme(data.rhyme);
-      generateImage(data.greeting);
+      generateImage(data.image);
       
       setLoadingState(false);
 
