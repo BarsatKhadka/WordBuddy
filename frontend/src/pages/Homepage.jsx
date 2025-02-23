@@ -196,8 +196,8 @@ function Homepage() {
                     className="h-5 w-5 text-indigo-600 focus:ring-indigo-400 border-gray-300 rounded"
                   />
                   </div>
-                  <label>
-                  Dyslexic-Friendly Mode
+                  <label htmlFor="dyslexicMode" className="ml-3 text-lg text-indigo-700">
+                    Dyslexic-Friendly Mode
                   </label>
                   </div>
                 </div>
