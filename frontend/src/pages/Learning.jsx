@@ -267,6 +267,44 @@ function Learning() {
     }
   };
 
+
+  // skips the current letter
+  const skipLetter = () => {
+    if (showPhonetic) {
+      // If we're in phonetic mode
+      if (currentLetterIndex === phoneticBreakdown.length - 1) {
+        setGameState('wholeWord');
+        const promptText = nativeLanguage === 'spanish' 
+          ? `Ahora di la palabra completa: ${currentWord}` 
+          : `Now say the whole word: ${currentWord}`;
+        speakText(promptText);
+      } else {
+        setCurrentLetterIndex(prev => prev + 1);
+        const promptText = nativeLanguage === 'spanish' 
+          ? `Pasando al siguiente sonido: ${phoneticBreakdown[currentLetterIndex + 1]}` 
+          : `Moving to the next sound: ${phoneticBreakdown[currentLetterIndex + 1]}`;
+        speakText(promptText);
+      }
+    } else {
+      // Regular letter mode
+      if (currentLetterIndex === currentWord.length - 1) {
+        setGameState('wholeWord');
+        const promptText = nativeLanguage === 'spanish' 
+          ? `Ahora di la palabra completa: ${currentWord}` 
+          : `Now say the whole word: ${currentWord}`;
+        speakText(promptText);
+      } else {
+        setCurrentLetterIndex(prev => prev + 1);
+        const promptText = nativeLanguage === 'spanish' 
+          ? `Pasando a la siguiente letra: ${currentWord[currentLetterIndex + 1]}` 
+          : `Moving to the next letter: ${currentWord[currentLetterIndex + 1]}`;
+        speakText(promptText);
+      }
+    }
+  };
+
+
+
     return(
     <div>
         Learning page, coming soon....
