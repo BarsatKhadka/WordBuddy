@@ -83,7 +83,7 @@ const processAudio = async (audioBlob) => {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          userId: 'user123', // You'll need to implement proper user identification
+          userId: 'user123', // User Identification
           ...stats,
           wordsCompleted: stats.wordsCompleted + 1,
           xp: stats.xp + 10
