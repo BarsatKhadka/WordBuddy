@@ -4,11 +4,18 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 function Homepage() {
     const [showSettings, setShowSettings] = useState(false);
-    const [settings, setSettings] = useState({
-      age: 7,
-      location: { city: '', country: '' },
-      dyslexicMode: false,
-    });
+    const [settings, setSettings] = useState(() => {
+      const savedSettings = localStorage.getItem('wordMagicSettings');
+      return savedSettings ? JSON.parse(savedSettings) : {
+        age: 7,
+        location: { city: '', country: '' },
+        dyslexicMode: false
+      };
+    }); 
+
+    useEffect(() => {
+      localStorage.setItem('wordMagicSettings', JSON.stringify(settings));
+    }, [settings.dyslexicMode, settings]);
 
     useEffect(() => {
         if (settings.dyslexicMode) {
