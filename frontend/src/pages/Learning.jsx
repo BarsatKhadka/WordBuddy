@@ -18,7 +18,6 @@ function Learning() {
     const [nativeLanguage, setNativeLanguage] = useState(null);
     
 
-
     const getNewWord = async () => {
         setLoadingState(true);
         try {
@@ -72,13 +71,44 @@ function Learning() {
         }
       };
 
+      const speakText = async (text) => {
+        try {
+          const useSpanishVoice = 
+            (text === currentWord && selectedLanguage === 'spanish') ||
+            text === '¡Perfecto!' ||
+            text.startsWith('¡') ||
+            /[áéíóúñ¿]/i.test(text) ||
+            (text.includes(currentWord) && selectedLanguage === 'spanish');
     
+          const response = await fetch('http://localhost:5000/api/text-to-speech', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              text,
+              useSpanishVoice
+            })
+          });
+    
+          if (!response.ok) {
+            throw new Error('Failed to get audio response');
+          }
+    
+          const audioBlob = await response.blob();
+          const audio = new Audio(URL.createObjectURL(audioBlob));
+          await audio.play();
+          setErrorMessage(''); // Clear any existing error message
+        } catch (error) {
+          console.error('Error with text-to-speech:', error);
+          setErrorMessage('Error with text-to-speech. Please try again.');
+        }
+      };
+
     return(
     <div>
-        learn page
+        Learning page, coming soon....
     </div>
-    )
-    
+    )   
 }
-
 export default Learning;
