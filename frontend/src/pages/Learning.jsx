@@ -69,7 +69,7 @@ function Learning() {
   const getFontStyle = () => {
     return dyslexicMode ? 
       { fontFamily: "'OpenDyslexic', sans-serif" } : 
-      { fontFamily: "'Comic Sans MS', cursive" };
+      { fontFamily: "'Fredoka', sans-serif" };
   };
 
   const getNewWord = async () => {

@@ -77,7 +77,13 @@ const LearningUI = ({
     if (languageSelectionStep === 1) {
       return (
         <div className="space-y-6">
-          <h2 className="text-xl font-bold text-purple-600 text-center mb-4" style={getFontStyle()}>
+          <h2 
+            className="text-3xl text-purple-600 text-center mb-4" 
+            style={{ 
+              fontFamily: dyslexicMode ? "'OpenDyslexic', sans-serif" : "'Bubblegum Sans', cursive",
+              textShadow: '2px 2px 0px #ff69b4'
+            }}
+          >
             What is your native language?
           </h2>
           <div className="space-y-4">
@@ -105,7 +111,13 @@ const LearningUI = ({
     } else if (languageSelectionStep === 2) {
       return (
         <div className="space-y-6">
-          <h2 className="text-xl font-bold text-purple-600 text-center mb-4" style={getFontStyle()}>
+          <h2 
+            className="text-3xl text-purple-600 text-center mb-4" 
+            style={{ 
+              fontFamily: dyslexicMode ? "'OpenDyslexic', sans-serif" : "'Bubblegum Sans', cursive",
+              textShadow: '2px 2px 0px #ff69b4'
+            }}
+          >
             Which language would you like to learn?
           </h2>
           <div className="space-y-4">
@@ -232,7 +244,13 @@ const LearningUI = ({
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.8 }}
         >
-          <h1 className="text-4xl font-bold text-purple-600 mb-4" style={getFontStyle()}>
+          <h1 
+            className="text-5xl mb-4 text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-500 via-yellow-500 to-cyan-500" 
+            style={{ 
+              fontFamily: dyslexicMode ? "'OpenDyslexic', sans-serif" : "'Bubblegum Sans', cursive",
+              textShadow: '2px 2px 0px #ff69b4, 4px 4px 0px #4169e1'
+            }}
+          >
             {languageSelectionStep <= 2 ? 'Welcome to Language Learning! 🎈' :
              selectedLanguage === 'spanish' ? '¡Aprendamos Nuevas Palabras! 🎈' : 'Let\'s Learn New Words! 🎈'}
           </h1>
@@ -248,7 +266,13 @@ const LearningUI = ({
             renderLanguageSelection()
           ) : !isGameStarted ? (
             <div className="space-y-6">
-              <h2 className="text-xl font-bold text-purple-600 text-center mb-4" style={getFontStyle()}>
+              <h2 
+                className="text-3xl text-center mb-4 text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-500" 
+                style={{ 
+                  fontFamily: dyslexicMode ? "'OpenDyslexic', sans-serif" : "'Bubblegum Sans', cursive",
+                  textShadow: '1px 1px 0px #ff69b4'
+                }}
+              >
                 {selectedLanguage === 'spanish' ? 'Elige tu idioma' : 'Choose Your Language'}
               </h2>
 
@@ -297,14 +321,20 @@ const LearningUI = ({
               ) : (
                 <>
                   <motion.div 
-                    className="text-lg text-gray-700 space-y-4"
+                    className="text-lg space-y-4"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.5 }}
                     style={getFontStyle()}
                   >
                     {/* Adventure Story */}
-                    <div className="text-purple-700">
+                    <div 
+                      className="text-2xl text-center text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-500"
+                      style={{ 
+                        fontFamily: dyslexicMode ? "'OpenDyslexic', sans-serif" : "'Bubblegum Sans', cursive",
+                        textShadow: '1px 1px 0px #ff69b4'
+                      }}
+                    >
                       {greeting}
                     </div>
 
