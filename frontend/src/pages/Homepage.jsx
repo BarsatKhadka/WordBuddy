@@ -147,11 +147,22 @@ function Homepage() {
                 exit={{ y: 20, opacity: 0 }}
                 transition={{ type: 'spring', bounce: 0.4 }}
               >
-                
+                <div className="flex justify-between items-center mb-8">
+                <h2 className="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent"
+                  style={{ fontFamily: settings.dyslexicMode ? "'OpenDyslexic', sans-serif" : "inherit" }}>
+                  Magic Settings
+                </h2>
+                <button 
+                  onClick={() => setShowSettings(false)}
+                  className="text-gray-500 hover:text-gray-700 text-2xl"
+                >
+                  ✕
+                </button>
+              </div>
                 <div className="space-y-6">
                   <div>
                     <label className="block text-lg text-indigo-700 mb-3">
-                      Your Age:
+                      Your Age: 
                     </label>
                     <input
                       type="range"
