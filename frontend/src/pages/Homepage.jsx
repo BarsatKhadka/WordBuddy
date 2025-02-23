@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Settings as SettingsIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useStore } from '../store/store';
@@ -8,10 +8,14 @@ import StartButton from '../components/FrontPage/StartButton';
 import AchievementBadges from '../components/FrontPage/AchievementBadges';
 import SettingsModal from '../components/FrontPage/SettingsModal';
 import { Link } from 'react-router-dom';
+import Select from 'react-select';
+import countryList from 'react-select-country-list';
 
 function Homepage() {
   const [showSettings, setShowSettings] = useState(false);
-  const { settings, initializeSettings } = useStore();
+  const { settings, initializeSettings, setSettings } = useStore();
+  
+  const countryOptions = useMemo(() => countryList().getData(), []);
 
   useEffect(() => {
     initializeSettings();
@@ -31,6 +35,18 @@ function Homepage() {
       console.error('Error applying settings:', error);
     }
   }, [settings]);
+
+  const handleCountryChange = (option) => {
+    const newSettings = {
+      ...settings,
+      location: {
+        ...settings.location,
+        country: option ? option.label : '',
+        countryCode: option ? option.value : ''
+      }
+    };
+    setSettings(newSettings);
+  };
 
   return (
     <div className={`min-h-screen bg-gradient-to-b from-cyan-400 via-pink-300 to-yellow-200 relative overflow-hidden ${settings.dyslexicMode ? 'dyslexic-font' : ''}`}>
@@ -118,7 +134,12 @@ function Homepage() {
         <SettingsIcon className="w-6 h-6 text-indigo-600" />
       </motion.button>
 
-      <SettingsModal showSettings={showSettings} setShowSettings={setShowSettings} />
+      <SettingsModal 
+        showSettings={showSettings} 
+        setShowSettings={setShowSettings} 
+        countryOptions={countryOptions}
+        onCountryChange={handleCountryChange}
+      />
     </div>
   );
 }
