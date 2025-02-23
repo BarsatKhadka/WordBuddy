@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Settings as SettingsIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useStore } from '../store/store';
-import BackgroundElements from '../components/BackgroundElements';
-import Header from '../components/Header';
-import StartButton from '../components/StartButton';
-import AchievementBadges from '../components/AchievementBadges';
-import SettingsModal from '../components/SettingsModal';
+import BackgroundElements from '../components/FrontPage/BackgroundElements';
+import Header from '../components/FrontPage/Header';
+import StartButton from '../components/FrontPage/StartButton';
+import AchievementBadges from '../components/FrontPage/AchievementBadges';
+import SettingsModal from '../components/FrontPage/SettingsModal';
 import { Link } from 'react-router-dom';
 
 function Homepage() {
