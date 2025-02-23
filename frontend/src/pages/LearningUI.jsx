@@ -1,5 +1,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState } from 'react';
+import { Cloud, Stars, Mic, SkipForward, FastForward, Globe, Trophy, Star, Sparkles, Zap, Hand } from 'lucide-react';
 
 const LearningUI = ({
     isGameStarted,
@@ -150,6 +152,7 @@ const LearningUI = ({
   };
 
   return (
+    <>
     <div className={`min-h-screen bg-gradient-to-b from-sky-200 via-purple-100 to-pink-100 relative overflow-hidden p-8 ${dyslexicMode ? 'dyslexic-font' : ''}`}>
       <motion.div 
         className="absolute top-10 left-10"
@@ -159,6 +162,37 @@ const LearningUI = ({
         <Cloud className="w-16 h-16 text-white" />
       </motion.div>
       </div>
+
+<div className="flex gap-4">
+<motion.button
+  onClick={skipLetter}
+  className="flex-1 py-2 px-4 bg-orange-500 text-white rounded-lg flex items-center justify-center gap-2"
+  whileHover={{ scale: 1.02 }}
+  whileTap={{ scale: 0.98 }}
+  style={getFontStyle()}
+>
+  <SkipForward className="w-4 h-4" />
+  {showPhonetic
+    ? (selectedLanguage === 'spanish' ? 'Saltar Sonido' : 'Skip Sound')
+    : (selectedLanguage === 'spanish' ? 'Saltar Letra' : 'Skip Letter')}
+</motion.button>
+
+<motion.button
+  onClick={skipWord}
+  className="flex-1 py-2 px-4 bg-orange-500 text-white rounded-lg flex items-center justify-center gap-2"
+  whileHover={{ scale: 1.02 }}
+  whileTap={{ scale: 0.98 }}
+  style={getFontStyle()}
+>
+  <FastForward className="w-4 h-4" />
+  {selectedLanguage === 'spanish' ? 'Saltar Palabra' : 'Skip Word'}
+</motion.button>
+</div>
+</>
+
+      
+
+
   )
 
 }
