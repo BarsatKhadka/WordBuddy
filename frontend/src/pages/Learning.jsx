@@ -2,238 +2,130 @@ import { useState, useRef, useEffect } from 'react';
 import LearningUI from './LearningUI';
 
 function Learning() {
-    const [isGameStarted, setIsGameStarted] = useState(false);
-    const [currentWord, setCurrentWord] = useState('');
-    const [translation, setTranslation] = useState('');
-    const [greeting, setGreeting] = useState('');
-    const [phoneticBreakdown, setPhoneticBreakdown] = useState([]);
-    const [currentLetterIndex, setCurrentLetterIndex] = useState(0);
-    const [gameState, setGameState] = useState('initial');
-    const [rhyme, setRhyme] = useState('');
-    const [loadingState, setLoadingState] = useState(false);
-    const [failedFirstAttempt, setFailedFirstAttempt] = useState(false);
-    const [showPhonetic, setShowPhonetic] = useState(false);
-    const [showMic, setShowMic] = useState(false);
-    const isFirstWord = useRef(true);
-    const mediaRecorderRef = useRef(null);
-    const audioChunksRef = useRef([]);
-    const [selectedLanguage, setSelectedLanguage] = useState('english');
-    const [nativeLanguage, setNativeLanguage] = useState(null);
-    const [languageSelectionStep, setLanguageSelectionStep] = useState(1);
-    const [dyslexicMode, setDyslexicMode] = useState(false);
-    const [storyImage, setStoryImage] = useState('');
-    const [errorMessage, setErrorMessage] = useState('');
-    const [isRecording, setIsRecording] = useState(false);
+  const [isGameStarted, setIsGameStarted] = useState(false);
+  const [currentWord, setCurrentWord] = useState('');
+  const [greeting, setGreeting] = useState('');
+  const [currentLetterIndex, setCurrentLetterIndex] = useState(0);
+  const [isRecording, setIsRecording] = useState(false);
+  const [gameState, setGameState] = useState('initial');
+  const [loadingState, setLoadingState] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [showMic, setShowMic] = useState(false);
+  const [storyImage, setStoryImage] = useState('');
+  const [selectedLanguage, setSelectedLanguage] = useState('english');
+  const [nativeLanguage, setNativeLanguage] = useState(null); // New state
+  const [languageSelectionStep, setLanguageSelectionStep] = useState(1); // New state
+  const mediaRecorderRef = useRef(null);
+  const audioChunksRef = useRef([]);
+  const isFirstWord = useRef(true);
+  const [dyslexicMode, setDyslexicMode] = useState(false);
+  const [phoneticBreakdown, setPhoneticBreakdown] = useState([]);
+  const [showPhonetic, setShowPhonetic] = useState(false);
+  const [failedFirstAttempt, setFailedFirstAttempt] = useState(false);
+  const [translation, setTranslation] = useState('');
+  const [stats, setStats] = useState(() => {
+    
+    const savedStats = localStorage.getItem('wordMagicStats');
+    return savedStats ? JSON.parse(savedStats) : {
+      wordsCompleted: 0,
+      level: 1,
+      xp: 0,
+      streak: 0,
+      lastPlayDate: null
+    };
+  });
+  const [rhyme, setRhyme] = useState('');
 
-    
-    const [stats, setStats] = useState(() => {
-        const savedStats = localStorage.getItem('wordMagicStats');
-        return savedStats ? JSON.parse(savedStats) : {
-          wordsCompleted: 0,
-          level: 1,
-          xp: 0,
-          streak: 0,
-          lastPlayDate: null
-        };
-      });
-    
-      useEffect(() => {
-        const loadSettings = () => {
-          try {
-            const savedSettings = localStorage.getItem('wordMagicSettings');
-            if (savedSettings) {
-              const parsedSettings = JSON.parse(savedSettings);
-              setDyslexicMode(parsedSettings.dyslexicMode || false);
-            }
-          } catch (error) {
-            console.error('Error loading settings:', error);
-          }
-        };
-        loadSettings();
-      }, []);
-    
-      useEffect(() => {
-        if (dyslexicMode) {
-          document.documentElement.style.fontFamily = "'OpenDyslexic', sans-serif";
-        } else {
-          document.documentElement.style.fontFamily = '';
+  useEffect(() => {
+    const loadSettings = () => {
+      try {
+        const savedSettings = localStorage.getItem('wordMagicSettings');
+        if (savedSettings) {
+          const parsedSettings = JSON.parse(savedSettings);
+          setDyslexicMode(parsedSettings.dyslexicMode || false);
         }
-      }, [dyslexicMode]);
-    
-      useEffect(() => {
-        const queryParams = new URLSearchParams(window.location.search);
-        const dyslexicParam = queryParams.get('dyslexic');
-        if (dyslexicParam === 'true') {
-          setDyslexicMode(true);
-        }
-      }, []);
-    
+      } catch (error) {
+        console.error('Error loading settings:', error);
+      }
+    };
+    loadSettings();
+  }, []);
 
-    // api endpoints sends a json with greeting, word, it's spanish translation, rhyme and phonetics
-    const getNewWord = async () => {
-        setLoadingState(true);
-        try {
-          const response = await fetch('http://localhost:5000/api/get-word', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              teachingLanguage: nativeLanguage,
-              learningLanguage: selectedLanguage,
-              isFirstWord: isFirstWord.current
-            })
-          });
-    
-          if (!response.ok) throw new Error(`API Error: ${response.status}`);
-          const data = await response.json();
-          
-          setCurrentWord(data.word.toLowerCase());
-          setTranslation(data.translation);
-          setGreeting(data.greeting);
-          setPhoneticBreakdown(data.phonetics ? data.phonetics.split('-') : data.word.split(''));
-          setCurrentLetterIndex(0);
-          setGameState('spelling');
-          setShowMic(true);
-          setShowPhonetic(false);
-          setFailedFirstAttempt(false);
-          isFirstWord.current = false;
-          setRhyme(data.rhyme);
-          
-          setLoadingState(false);
-    
-          await speakText(data.greeting);
-          
-          const translationMessage = selectedLanguage === 'spanish' 
-            ? `The word "${data.word}" means "${data.translation}" in English.`
-            : `La palabra "${data.word}" significa "${data.translation}" en español.`;
-          
-          setTimeout(async () => {
-            await speakText(translationMessage);
-          }, 1500);
-    
-        } catch (error) {
-          console.error('Error in getNewWord:', error);
-          const errorMsg = nativeLanguage === 'spanish' 
-            ? 'Lo siento, hubo un error al obtener una nueva palabra. Por favor, inténtalo de nuevo.' 
-            : 'Sorry, there was an error getting a new word. Please try again.';
-          setGreeting(errorMsg);
-          setRhyme('');
-          setLoadingState(false);
-        }
-      };
-
-      // convert text into speech
-      const speakText = async (text) => {
-        try {
-          const useSpanishVoice = 
-            (text === currentWord && selectedLanguage === 'spanish') ||
-            text === '¡Perfecto!' ||
-            text.startsWith('¡') ||
-            /[áéíóúñ¿]/i.test(text) ||
-            (text.includes(currentWord) && selectedLanguage === 'spanish');
-    
-          const response = await fetch('http://localhost:5000/api/text-to-speech', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              text,
-              useSpanishVoice
-            })
-          });
-    
-          if (!response.ok) {
-            throw new Error('Failed to get audio response');
-          }
-    
-          const audioBlob = await response.blob();
-          const audio = new Audio(URL.createObjectURL(audioBlob));
-          await audio.play();
-          setErrorMessage(''); // Clear any existing error message
-        } catch (error) {
-          console.error('Error with text-to-speech:', error);
-          setErrorMessage('Error with text-to-speech. Please try again.');
-        }
-      };
-
-// takes the audio and changes it into text
-  const processAudio = async (audioBlob) => {
-    try {
-      const formData = new FormData();
-      formData.append('audio', audioBlob, 'audio.wav');
-      formData.append('language', selectedLanguage);
-
-      const response = await fetch('http://localhost:5000/api/process-speech', {
-        method: 'POST',
-        body: formData
-      });
-
-      if (!response.ok) throw new Error('Failed to transcribe audio');
-      const data = await response.json();
-      handleSpeechResult(data.text.toLowerCase());
-    } catch (error) {
-      console.error('Error processing audio:', error);
-      const errorMsg = nativeLanguage === 'spanish' 
-        ? 'Error al procesar el habla. Por favor, inténtalo de nuevo.' 
-        : 'Error processing speech. Please try again.';
-      setErrorMessage(errorMsg);
-    } finally {
-      setIsRecording(false);
+  useEffect(() => {
+    if (dyslexicMode) {
+      document.documentElement.style.fontFamily = "'OpenDyslexic', sans-serif";
+    } else {
+      document.documentElement.style.fontFamily = '';
     }
-  };
+  }, [dyslexicMode]);
 
-  // Records the audio from user in web
-  const startRecording = async () => {
-    try {
-      setIsRecording(true);
-      setErrorMessage('');
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const mediaRecorder = new MediaRecorder(stream);
-      mediaRecorderRef.current = mediaRecorder;
-      audioChunksRef.current = [];
-
-      mediaRecorder.ondataavailable = (event) => {
-        audioChunksRef.current.push(event.data);
-      };
-
-      mediaRecorder.onstop = async () => {
-        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/wav' });
-        await processAudio(audioBlob);
-      };
-
-      mediaRecorder.start();
-      setTimeout(() => {
-        if (mediaRecorderRef.current?.state === 'recording') {
-          mediaRecorderRef.current.stop();
-          stream.getTracks().forEach(track => track.stop());
-        }
-      }, 2000);
-    } catch (error) {
-      console.error('Error starting recording:', error);
-      setIsRecording(false);
-      const errorMsg = nativeLanguage === 'spanish' 
-        ? 'Error al acceder al micrófono. Por favor, verifica los permisos.' 
-        : 'Error accessing microphone. Please check permissions.';
-      setErrorMessage(errorMsg);
+  useEffect(() => {
+    const queryParams = new URLSearchParams(window.location.search);
+    const dyslexicParam = queryParams.get('dyslexic');
+    if (dyslexicParam === 'true') {
+      setDyslexicMode(true);
     }
-  };
+  }, []);
 
-  // getFontStyle
   const getFontStyle = () => {
     return dyslexicMode ? 
       { fontFamily: "'OpenDyslexic', sans-serif" } : 
       { fontFamily: "'Comic Sans MS', cursive" };
   };
 
-  // Starts the actual game
-  const startGame = async () => {
-    setIsGameStarted(true);
-    await getNewWord();
+  const getNewWord = async () => {
+    setLoadingState(true);
+    try {
+      const response = await fetch('http://localhost:5000/api/get-word', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          teachingLanguage: nativeLanguage,
+          learningLanguage: selectedLanguage,
+          isFirstWord: isFirstWord.current
+        })
+      });
+
+      if (!response.ok) throw new Error(`API Error: ${response.status}`);
+      const data = await response.json();
+      
+      setCurrentWord(data.word.toLowerCase());
+      setTranslation(data.translation);
+      setGreeting(data.greeting);
+      setPhoneticBreakdown(data.phonetics ? data.phonetics.split('-') : data.word.split(''));
+      setCurrentLetterIndex(0);
+      setGameState('spelling');
+      setShowMic(true);
+      setShowPhonetic(false);
+      setFailedFirstAttempt(false);
+      isFirstWord.current = false;
+      setRhyme(data.rhyme);
+      
+      setLoadingState(false);
+
+      await speakText(data.greeting);
+      
+      const translationMessage = selectedLanguage === 'spanish' 
+        ? `The word "${data.word}" means "${data.translation}" in English.`
+        : `La palabra "${data.word}" significa "${data.translation}" en español.`;
+      
+      setTimeout(async () => {
+        await speakText(translationMessage);
+      }, 1500);
+
+    } catch (error) {
+      console.error('Error in getNewWord:', error);
+      const errorMsg = nativeLanguage === 'spanish' 
+        ? 'Lo siento, hubo un error al obtener una nueva palabra. Por favor, inténtalo de nuevo.' 
+        : 'Sorry, there was an error getting a new word. Please try again.';
+      setGreeting(errorMsg);
+      setRhyme('');
+      setLoadingState(false);
+    }
   };
 
-  // handling the speaking and validating logic
   const handleSpeechResult = (spokenText) => {
     if (gameState === 'spelling') {
       if (showPhonetic) {
@@ -323,8 +215,11 @@ function Learning() {
     }
   };
 
+  const startGame = async () => {
+    setIsGameStarted(true);
+    await getNewWord();
+  };
 
-  // skips the current letter
   const skipLetter = () => {
     if (showPhonetic) {
       // If we're in phonetic mode
@@ -359,6 +254,13 @@ function Learning() {
     }
   };
 
+  const skipWord = async () => {
+    const skipText = nativeLanguage === 'spanish' 
+      ? "Vamos a intentar con una palabra diferente." 
+      : "Let's try a different word.";
+    speakText(skipText);
+    setTimeout(getNewWord, 1500);
+  };
 
   const handleNativeLanguageSelect = (language) => {
     setNativeLanguage(language);
@@ -373,17 +275,102 @@ function Learning() {
     isFirstWord.current = true;
   };
 
-  // skips the word fully
-  const skipWord = async () => {
-    const skipText = nativeLanguage === 'spanish' 
-      ? "Vamos a intentar con una palabra diferente." 
-      : "Let's try a different word.";
-    speakText(skipText);
-    setTimeout(getNewWord, 1500);
+  const startRecording = async () => {
+    try {
+      setIsRecording(true);
+      setErrorMessage('');
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const mediaRecorder = new MediaRecorder(stream);
+      mediaRecorderRef.current = mediaRecorder;
+      audioChunksRef.current = [];
+
+      mediaRecorder.ondataavailable = (event) => {
+        audioChunksRef.current.push(event.data);
+      };
+
+      mediaRecorder.onstop = async () => {
+        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/wav' });
+        await processAudio(audioBlob);
+      };
+
+      mediaRecorder.start();
+      setTimeout(() => {
+        if (mediaRecorderRef.current?.state === 'recording') {
+          mediaRecorderRef.current.stop();
+          stream.getTracks().forEach(track => track.stop());
+        }
+      }, 2000);
+    } catch (error) {
+      console.error('Error starting recording:', error);
+      setIsRecording(false);
+      const errorMsg = nativeLanguage === 'spanish' 
+        ? 'Error al acceder al micrófono. Por favor, verifica los permisos.' 
+        : 'Error accessing microphone. Please check permissions.';
+      setErrorMessage(errorMsg);
+    }
   };
 
-    return(
-<LearningUI
+  const speakText = async (text) => {
+    try {
+      const useSpanishVoice = 
+        (text === currentWord && selectedLanguage === 'spanish') ||
+        text === '¡Perfecto!' ||
+        text.startsWith('¡') ||
+        /[áéíóúñ¿]/i.test(text) ||
+        (text.includes(currentWord) && selectedLanguage === 'spanish');
+
+      const response = await fetch('http://localhost:5000/api/text-to-speech', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          text,
+          useSpanishVoice
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to get audio response');
+      }
+
+      const audioBlob = await response.blob();
+      const audio = new Audio(URL.createObjectURL(audioBlob));
+      await audio.play();
+      setErrorMessage(''); // Clear any existing error message
+    } catch (error) {
+      console.error('Error with text-to-speech:', error);
+      setErrorMessage('Error with text-to-speech. Please try again.');
+    }
+  };
+
+  const processAudio = async (audioBlob) => {
+    try {
+      const formData = new FormData();
+      formData.append('audio', audioBlob, 'audio.wav');
+      formData.append('language', selectedLanguage);
+
+      const response = await fetch('http://localhost:5000/api/process-speech', {
+        method: 'POST',
+        body: formData
+      });
+
+      if (!response.ok) throw new Error('Failed to transcribe audio');
+      const data = await response.json();
+      handleSpeechResult(data.text.toLowerCase());
+    } catch (error) {
+      console.error('Error processing audio:', error);
+      const errorMsg = nativeLanguage === 'spanish' 
+        ? 'Error al procesar el habla. Por favor, inténtalo de nuevo.' 
+        : 'Error processing speech. Please try again.';
+      setErrorMessage(errorMsg);
+    } finally {
+      setIsRecording(false);
+    }
+  };
+
+  return (
+    <LearningUI
       isGameStarted={isGameStarted}
       currentWord={currentWord}
       greeting={greeting}
@@ -411,6 +398,7 @@ function Learning() {
       stats={stats}
       rhyme={rhyme}
     />
-    )   
+  );
 }
+
 export default Learning;
