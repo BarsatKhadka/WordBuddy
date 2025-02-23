@@ -349,12 +349,15 @@ const LearningUI = ({
                         <div className="text-2xl font-bold text-purple-800">
                           {currentWord}
                         </div>
-                        <div className="text-md text-purple-600">
-                          {nativeLanguage === 'spanish' 
-                            ? `Significa "${translation}" en español`
-                            : `Means "${translation}" in English`
-                          }
-                        </div>
+                        {/* Only show translation when native language is different from selected language */}
+                        {nativeLanguage !== selectedLanguage && (
+                          <div className="text-md text-purple-600">
+                            {nativeLanguage === 'spanish' 
+                              ? `Significa "${translation}" en español`
+                              : `Means "${translation}" in English`
+                            }
+                          </div>
+                        )}
                       </div>
                     </motion.div>
 

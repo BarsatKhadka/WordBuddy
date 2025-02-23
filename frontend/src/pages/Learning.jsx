@@ -106,13 +106,15 @@ function Learning() {
 
       await speakText(data.greeting);
       
-      const translationMessage = selectedLanguage === 'spanish' 
-        ? `The word "${data.word}" means "${data.translation}" in English.`
-        : `La palabra "${data.word}" significa "${data.translation}" en español.`;
-      
-      setTimeout(async () => {
-        await speakText(translationMessage);
-      }, 1500);
+      if (nativeLanguage !== selectedLanguage) {
+        const translationMessage = selectedLanguage === 'spanish' 
+          ? `The word "${data.word}" means "${data.translation}" in English.`
+          : `La palabra "${data.word}" significa "${data.translation}" en español.`;
+        
+        setTimeout(async () => {
+          await speakText(translationMessage);
+        }, 1500);
+      }
 
     } catch (error) {
       console.error('Error in getNewWord:', error);
