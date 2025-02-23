@@ -74,6 +74,37 @@ app.get('/api/get-word', async (req, res) => {
     res.status(500).json({ error: 'Failed to generate word' });
   }
 });
+app.post('/api/process-speech', async (req, res) => {
+  try {
+    if (!req.files || !req.files.audio) {
+      return res.status(400).json({ error: 'No audio file uploaded' });
+    }
+
+    const audioFile = req.files.audio;
+    const language = req.body.language;
+
+    // Create temporary file
+    const tempFilePath = path.join(__dirname, 'temp.wav');
+    await audioFile.mv(tempFilePath);
+
+    // Create a File object from the temporary file
+    const file = fs.createReadStream(tempFilePath);
+
+    const transcription = await openai.audio.transcriptions.create({
+      file: file,
+      model: "whisper-1",
+      language: language === 'spanish' ? 'es' : 'en'
+    });
+
+    // Clean up temp file
+    fs.unlinkSync(tempFilePath);
+
+    res.json({ text: transcription.text });
+  } catch (error) {
+    console.error('Error processing speech:', error);
+    res.status(500).json({ error: 'Failed to process speech' });
+  }
+});
 
 app.listen(port, ()=>{
     console.log(`Server is running on port ${port}`);
