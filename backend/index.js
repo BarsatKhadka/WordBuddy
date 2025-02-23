@@ -111,7 +111,7 @@ app.post('/api/process-speech', async (req, res) => {
 app.post('/api/text-to-speech', async (req, res) => {
   try {
     const { text, useSpanishVoice } = req.body;
-    // const voiceId = useSpanishVoice ? 'gbTn1bmCvNgk0QEAVyfM' : 'EXAVITQu4vr4xnSDxMaL';
+    const voiceId = useSpanishVoice ? '29vD33N1CtxCmqQRPOHJ' : 'EXAVITQu4vr4xnSDxMaL';
 
     const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
       method: 'POST',
