@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { useStore } from '../store/store';
+import { useStore } from '../../store/store';
 
 const StartButton = () => {
   const { settings } = useStore();

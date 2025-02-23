@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { useStore } from '../store/store';
+import { useStore } from '../../store/store';
 
 const Header = () => {
   const { settings } = useStore();
