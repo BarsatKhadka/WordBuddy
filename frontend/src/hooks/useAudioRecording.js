@@ -32,5 +32,5 @@ export const useAudioRecording = (processAudio) => {
     }
   };
 
-  return { startRecording };
+  return { startRecording, mediaRecorderRef };
 }; 
