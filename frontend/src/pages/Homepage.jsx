@@ -49,7 +49,7 @@ function Homepage() {
     };
   
     return (
-      <div className="min-h-screen bg-gradient-to-b from-cyan-400 via-pink-300 to-yellow-200 relative overflow-hidden">
+      <div className={`min-h-screen bg-gradient-to-b from-cyan-400 via-pink-300 to-yellow-200 relative overflow-hidden ${settings.dyslexicMode ? 'dyslexic-font' : ''}`}>
         <div className="absolute inset-0 overflow-hidden">
         {/* Floating Palm Trees */}
         {[...Array(8)].map((_, i) => (
