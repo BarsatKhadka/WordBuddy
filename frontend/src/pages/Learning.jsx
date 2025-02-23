@@ -132,19 +132,19 @@ function Learning() {
         if (spokenText.includes(currentPhoneme)) {
           if (currentLetterIndex === phoneticBreakdown.length - 1) {
             setGameState('wholeWord');
-            const successMsg = selectedLanguage === 'spanish' 
+            const successMsg = (selectedLanguage === 'spanish' && nativeLanguage === 'spanish') 
               ? `¡Perfecto!` 
               : `Perfect! Now say the whole word: ${currentWord}`;
             speakText(successMsg);
           } else {
             setCurrentLetterIndex(prev => prev + 1);
-            const nextMsg = selectedLanguage === 'spanish' 
+            const nextMsg = (selectedLanguage === 'spanish' && nativeLanguage === 'spanish')
               ? `¡Perfecto!` 
               : `Perfect! Try pronouncing the next sound: ${phoneticBreakdown[currentLetterIndex + 1]}`;
             speakText(nextMsg);
           }
         } else {
-          const tryAgainMsg = selectedLanguage === 'spanish' 
+          const tryAgainMsg = (selectedLanguage === 'spanish' && nativeLanguage === 'spanish')
             ? `¡Inténtalo!` 
             : `Try again! Say the sound ${currentPhoneme}`;
           speakText(tryAgainMsg);
@@ -154,19 +154,19 @@ function Learning() {
         if (spokenText.includes(currentLetter)) {
           if (currentLetterIndex === currentWord.length - 1) {
             setGameState('wholeWord');
-            const successMsg = selectedLanguage === 'spanish' 
+            const successMsg = (selectedLanguage === 'spanish' && nativeLanguage === 'spanish')
               ? `¡Perfecto!` 
               : `Perfect! Now say the whole word: ${currentWord}`;
             speakText(successMsg);
           } else {
             setCurrentLetterIndex(prev => prev + 1);
-            const nextMsg = selectedLanguage === 'spanish' 
+            const nextMsg = (selectedLanguage === 'spanish' && nativeLanguage === 'spanish') 
               ? `¡Perfecto!` 
               : `Perfect! Try pronouncing the next letter: ${currentWord[currentLetterIndex + 1]}`;
             speakText(nextMsg);
           }
         } else {
-          const tryAgainMsg = selectedLanguage === 'spanish' 
+          const tryAgainMsg = (selectedLanguage === 'spanish' && nativeLanguage === 'spanish') 
             ? `¡Inténtalo!` 
             : `Try again! Say the letter ${currentLetter}`;
           speakText(tryAgainMsg);
@@ -177,7 +177,7 @@ function Learning() {
         setGameState('success');
         
         // First congratulate
-        const congratsMsg = selectedLanguage === 'spanish' 
+        const congratsMsg = (selectedLanguage === 'spanish' && nativeLanguage === 'spanish') 
           ? `¡Excelente! Has deletreado y dicho ${currentWord} correctamente.` 
           : `Excellent! You've spelled and said ${currentWord} correctly!`;
         
@@ -199,13 +199,13 @@ function Learning() {
           setCurrentLetterIndex(0);
           setGameState('spelling');
           
-          const phoneticGuideMsg = selectedLanguage === 'spanish'
+          const phoneticGuideMsg = (selectedLanguage === 'spanish' && nativeLanguage === 'spanish')
             ? `Intentemos con los sonidos. Pronuncia este sonido: ${phoneticBreakdown[0]}`
             : `Let's try breaking it down by sounds. Say this sound: ${phoneticBreakdown[0]}`;
           speakText(phoneticGuideMsg);
         } else {
           // Second or later failure
-          const tryAgainWordMsg = selectedLanguage === 'spanish' 
+          const tryAgainWordMsg = (selectedLanguage === 'spanish' && nativeLanguage === 'spanish') 
             ? `Inténtalo de nuevo. Di la palabra ${currentWord}` 
             : `Try again! Say the word ${currentWord}`;
           speakText(tryAgainWordMsg);
