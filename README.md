@@ -69,7 +69,7 @@ Built with:
 - **MySQL** 🗄️: Securely stores progress, user profiles, and word databases.  
 - **Zustand** 🚀: Ensures smooth state management for lag-free learning.
 
-## 🚀 **Future of WordBuddy: Bridging Communication Gaps**  
+## 🚀 **Future of WordBuddy.ai: Bridging Communication Gaps**  
 **Real-Time Accessibility with machine learning models on different sign languages such as ASL/BSL for Deaf Learners**  
 
 
