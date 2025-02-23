@@ -268,7 +268,7 @@ const LearningUI = ({
                 <motion.button
                   className={`px-6 py-3 rounded-lg font-bold text-lg flex items-center gap-2
                     ${selectedLanguage === 'spanish' ? 'bg-purple-600 text-white' : 'bg-gray-200 text-gray-700'}`}
-                  whileHover={{ scale: 1.02 }}  
+                  whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => handleLanguageChange('spanish')}
                   style={getFontStyle()}
@@ -431,27 +431,27 @@ const LearningUI = ({
                     </div>
                   )}
 
-                    {showMic && (
-                      <motion.div 
-                        className="space-y-4"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, delay: 0.4 }}
+                  {showMic && (
+                    <motion.div 
+                      className="space-y-4"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5, delay: 0.4 }}
+                    >
+                      <motion.button
+                        onClick={startRecording}
+                        disabled={isRecording}
+                        className={`w-full py-4 rounded-lg flex items-center justify-center gap-2
+                          ${isRecording ? 'bg-red-500' : 'bg-purple-600'} text-white`}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        style={getFontStyle()}
                       >
-                        <motion.button
-                          onClick={startRecording}
-                          disabled={isRecording}
-                          className={`w-full py-4 rounded-lg flex items-center justify-center gap-2
-                            ${isRecording ? 'bg-red-500' : 'bg-purple-600'} text-white`}
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
-                          style={getFontStyle()}
-                        >
-                          <Mic className={`w-6 h-6 ${isRecording ? 'animate-pulse' : ''}`} />
-                          {isRecording 
-                            ? (selectedLanguage === 'spanish' ? 'Escuchando...' : 'Listening...') 
-                            : (selectedLanguage === 'spanish' ? 'Haz clic para hablar' : 'Click to Speak')}
-                        </motion.button>
+                        <Mic className={`w-6 h-6 ${isRecording ? 'animate-pulse' : ''}`} />
+                        {isRecording 
+                          ? (selectedLanguage === 'spanish' ? 'Escuchando...' : 'Listening...') 
+                          : (selectedLanguage === 'spanish' ? 'Haz clic para hablar' : 'Click to Speak')}
+                      </motion.button>
 
                       <div className="flex gap-4">
                         <motion.button

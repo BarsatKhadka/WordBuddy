@@ -36,7 +36,7 @@ app.get('/', (req, res) => {
 });
 
 // Here are the Routes
-app.get('/api/get-word', async (req, res) => {
+app.post('/api/get-word', async (req, res) => {
   try {
     const { teachingLanguage, learningLanguage, isFirstWord } = req.body;
     
