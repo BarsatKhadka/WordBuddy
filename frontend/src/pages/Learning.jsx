@@ -23,6 +23,7 @@ function Learning() {
   const [showPhonetic, setShowPhonetic] = useState(false);
   const [failedFirstAttempt, setFailedFirstAttempt] = useState(false);
   const [translation, setTranslation] = useState('');
+  
   const [stats, setStats] = useState(() => {
     const savedStats = localStorage.getItem('wordMagicStats');
     return savedStats ? JSON.parse(savedStats) : {
@@ -89,7 +90,8 @@ function Learning() {
 
       if (!response.ok) throw new Error(`API Error: ${response.status}`);
       const data = await response.json();
-      
+ 
+
       setCurrentWord(data.word.toLowerCase());
       setTranslation(data.translation);
       setGreeting(data.greeting);
@@ -101,6 +103,7 @@ function Learning() {
       setFailedFirstAttempt(false);
       isFirstWord.current = false;
       setRhyme(data.rhyme);
+      generateImage(data.greeting);
       
       setLoadingState(false);
 
@@ -369,6 +372,36 @@ function Learning() {
       setIsRecording(false);
     }
   };
+
+  const generateImage = async (story) => {
+    try {
+      console.log(story)
+      const response = await fetch('https://api.openai.com/v1/images/generations', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`
+        },
+        body: JSON.stringify({
+          model: "dall-e-3",
+          prompt: `Create a child-friendly, colorful illustration of: ${story}. Make it whimsical and appropriate for young children, using bright colors and a storybook style.`,
+          n: 1,
+          size: "1024x1024"
+        })
+      });
+  
+      if (!response.ok) {
+        throw new Error(`API Error: ${response.status}`);
+      }
+  
+      const data = await response.json();
+      setStoryImage(data.data[0].url);
+    } catch (error) {
+      console.error('Error generating image:', error);
+      setErrorMessage('Error generating story image.');
+    }
+  };
+
 
   return (
     <LearningUI

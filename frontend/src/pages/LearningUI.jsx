@@ -339,6 +339,9 @@ const LearningUI = ({
                     >
                       {greeting}
                     </div>
+                    
+                    
+
 
                     {/* Word and Translation Box */}
                     <motion.div 
