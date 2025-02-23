@@ -18,6 +18,25 @@ function Learning() {
     const audioChunksRef = useRef([]);
     const [selectedLanguage, setSelectedLanguage] = useState('english');
     const [nativeLanguage, setNativeLanguage] = useState(null);
+    const [languageSelectionStep, setLanguageSelectionStep] = useState(1);
+    const [dyslexicMode, setDyslexicMode] = useState(false);
+    const [storyImage, setStoryImage] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
+    const [isRecording, setIsRecording] = useState(false);
+
+
+
+    
+    const [stats, setStats] = useState(() => {
+        const savedStats = localStorage.getItem('wordMagicStats');
+        return savedStats ? JSON.parse(savedStats) : {
+          wordsCompleted: 0,
+          level: 1,
+          xp: 0,
+          streak: 0,
+          lastPlayDate: null
+        };
+      });
     
 
     // api endpoints sends a json with greeting, word, it's spanish translation, rhyme and phonetics
@@ -169,6 +188,13 @@ function Learning() {
         : 'Error accessing microphone. Please check permissions.';
       setErrorMessage(errorMsg);
     }
+  };
+
+  // getFontStyle
+  const getFontStyle = () => {
+    return dyslexicMode ? 
+      { fontFamily: "'OpenDyslexic', sans-serif" } : 
+      { fontFamily: "'Comic Sans MS', cursive" };
   };
 
   // Starts the actual game
@@ -327,9 +353,34 @@ function Learning() {
   };
 
     return(
-    <div>
-        Learning page, coming soon....
-    </div>
+<LearningUI
+      isGameStarted={isGameStarted}
+      currentWord={currentWord}
+      greeting={greeting}
+      currentLetterIndex={currentLetterIndex}
+      isRecording={isRecording}
+      gameState={gameState}
+      loadingState={loadingState}
+      errorMessage={errorMessage}
+      showMic={showMic}
+      storyImage={storyImage}
+      selectedLanguage={selectedLanguage}
+      dyslexicMode={dyslexicMode}
+      getFontStyle={getFontStyle}
+      startGame={startGame}
+      handleLanguageChange={handleLanguageChange}
+      startRecording={startRecording}
+      skipLetter={skipLetter}
+      skipWord={skipWord}
+      showPhonetic={showPhonetic}
+      phoneticBreakdown={phoneticBreakdown}
+      languageSelectionStep={languageSelectionStep}
+      handleNativeLanguageSelect={handleNativeLanguageSelect}
+      nativeLanguage={nativeLanguage}
+      translation={translation}
+      stats={stats}
+      rhyme={rhyme}
+    />
     )   
 }
 export default Learning;
