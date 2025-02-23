@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Cloud, Stars, Mic, SkipForward, FastForward, Globe, Trophy, Star, Sparkles, Zap, Hand } from 'lucide-react';
+import BackgroundElements from '../components/Learning/BackgroundElements';
 
 
 const LearningUI = ({
@@ -229,6 +230,7 @@ const LearningUI = ({
 
   return (
     <div className={`min-h-screen bg-gradient-to-b from-sky-200 via-purple-100 to-pink-100 relative overflow-hidden p-8 ${dyslexicMode ? 'dyslexic-font' : ''}`}>
+     <BackgroundElements />
       <motion.div 
         className="absolute top-10 left-10"
         animate={{ x: [0, 20, 0] }}
@@ -542,6 +544,8 @@ const LearningUI = ({
           />
         )}
       </AnimatePresence>
+      
+      <></>
     </div>
   );
 };
