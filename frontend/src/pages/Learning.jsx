@@ -25,8 +25,6 @@ function Learning() {
     const [errorMessage, setErrorMessage] = useState('');
     const [isRecording, setIsRecording] = useState(false);
 
-
-
     
     const [stats, setStats] = useState(() => {
         const savedStats = localStorage.getItem('wordMagicStats');
@@ -38,6 +36,37 @@ function Learning() {
           lastPlayDate: null
         };
       });
+    
+      useEffect(() => {
+        const loadSettings = () => {
+          try {
+            const savedSettings = localStorage.getItem('wordMagicSettings');
+            if (savedSettings) {
+              const parsedSettings = JSON.parse(savedSettings);
+              setDyslexicMode(parsedSettings.dyslexicMode || false);
+            }
+          } catch (error) {
+            console.error('Error loading settings:', error);
+          }
+        };
+        loadSettings();
+      }, []);
+    
+      useEffect(() => {
+        if (dyslexicMode) {
+          document.documentElement.style.fontFamily = "'OpenDyslexic', sans-serif";
+        } else {
+          document.documentElement.style.fontFamily = '';
+        }
+      }, [dyslexicMode]);
+    
+      useEffect(() => {
+        const queryParams = new URLSearchParams(window.location.search);
+        const dyslexicParam = queryParams.get('dyslexic');
+        if (dyslexicParam === 'true') {
+          setDyslexicMode(true);
+        }
+      }, []);
     
 
     // api endpoints sends a json with greeting, word, it's spanish translation, rhyme and phonetics
