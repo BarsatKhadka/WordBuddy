@@ -14,6 +14,8 @@ function Learning() {
     const [showPhonetic, setShowPhonetic] = useState(false);
     const [showMic, setShowMic] = useState(false);
     const isFirstWord = useRef(true);
+    const mediaRecorderRef = useRef(null);
+    const audioChunksRef = useRef([]);
     const [selectedLanguage, setSelectedLanguage] = useState('english');
     const [nativeLanguage, setNativeLanguage] = useState(null);
     
@@ -133,6 +135,42 @@ function Learning() {
     }
   };
 
+  // Records the audio from user in web
+  const startRecording = async () => {
+    try {
+      setIsRecording(true);
+      setErrorMessage('');
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const mediaRecorder = new MediaRecorder(stream);
+      mediaRecorderRef.current = mediaRecorder;
+      audioChunksRef.current = [];
+
+      mediaRecorder.ondataavailable = (event) => {
+        audioChunksRef.current.push(event.data);
+      };
+
+      mediaRecorder.onstop = async () => {
+        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/wav' });
+        await processAudio(audioBlob);
+      };
+
+      mediaRecorder.start();
+      setTimeout(() => {
+        if (mediaRecorderRef.current?.state === 'recording') {
+          mediaRecorderRef.current.stop();
+          stream.getTracks().forEach(track => track.stop());
+        }
+      }, 2000);
+    } catch (error) {
+      console.error('Error starting recording:', error);
+      setIsRecording(false);
+      const errorMsg = nativeLanguage === 'spanish' 
+        ? 'Error al acceder al micrófono. Por favor, verifica los permisos.' 
+        : 'Error accessing microphone. Please check permissions.';
+      setErrorMessage(errorMsg);
+    }
+  };
+  
     return(
     <div>
         Learning page, coming soon....
