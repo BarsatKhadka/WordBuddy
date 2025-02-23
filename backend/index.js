@@ -74,6 +74,7 @@ app.get('/api/get-word', async (req, res) => {
     res.status(500).json({ error: 'Failed to generate word' });
   }
 });
+
 app.post('/api/process-speech', async (req, res) => {
   try {
     if (!req.files || !req.files.audio) {
@@ -103,6 +104,41 @@ app.post('/api/process-speech', async (req, res) => {
   } catch (error) {
     console.error('Error processing speech:', error);
     res.status(500).json({ error: 'Failed to process speech' });
+  }
+});
+
+// This is the Elevenlabs Text-to-Speech API call
+app.post('/api/text-to-speech', async (req, res) => {
+  try {
+    const { text, useSpanishVoice } = req.body;
+    const voiceId = useSpanishVoice ? 'gbTn1bmCvNgk0QEAVyfM' : 'EXAVITQu4vr4xnSDxMaL';
+
+    const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'audio/mpeg',
+        'Content-Type': 'application/json',
+        'xi-api-key': process.env.ELEVENLABS_API_KEY
+      },
+      body: JSON.stringify({
+        text,
+        model_id: 'eleven_monolingual_v1',
+        voice_settings: { stability: 0.5, similarity_boost: 0.5 }
+      })
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('ElevenLabs API error:', errorData);
+      throw new Error(`ElevenLabs API error: ${response.status}`);
+    }
+
+    const audioBuffer = await response.arrayBuffer();
+    res.set('Content-Type', 'audio/mpeg');
+    res.send(Buffer.from(audioBuffer));
+  } catch (error) {
+    console.error('Error generating speech:', error);
+    res.status(500).json({ error: 'Failed to generate speech' });
   }
 });
 
