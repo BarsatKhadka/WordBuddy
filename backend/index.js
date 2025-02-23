@@ -31,8 +31,12 @@ const openai = new OpenAI({
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+app.get('/', (req, res) => {
+  res.send('Server is running!');
+});
+
 // Here are the Routes
-app.post('/api/get-word', async (req, res) => {
+app.get('/api/get-word', async (req, res) => {
   try {
     const { teachingLanguage, learningLanguage, isFirstWord } = req.body;
     
@@ -62,9 +66,15 @@ app.post('/api/get-word', async (req, res) => {
       ]
     });
 
+    console.log("OpenAI Response:", response.choices[0].message.content);
+
     res.json(JSON.parse(response.choices[0].message.content));
   } catch (error) {
     console.error('Error:', error);
     res.status(500).json({ error: 'Failed to generate word' });
   }
 });
+
+app.listen(port, ()=>{
+    console.log(`Server is running on port ${port}`);
+})
