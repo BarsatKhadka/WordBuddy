@@ -3,12 +3,8 @@ import { Settings as SettingsIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useStore } from '../store/store';
 import BackgroundElements from '../components/FrontPage/BackgroundElements';
-import Header from '../components/FrontPage/Header';
-import StartButton from '../components/FrontPage/StartButton';
-import AchievementBadges from '../components/FrontPage/AchievementBadges';
 import SettingsModal from '../components/FrontPage/SettingsModal';
 import { Link } from 'react-router-dom';
-import Select from 'react-select';
 import countryList from 'react-select-country-list';
 
 function Homepage() {
