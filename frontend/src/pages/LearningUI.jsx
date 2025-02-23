@@ -228,6 +228,15 @@ const LearningUI = ({
     );
   };
 
+  const formatRhyme = (rhymeText) => {
+    return rhymeText.split('\\n').map((line, index) => (
+      <span key={index}>
+        {line}
+        <br />
+      </span>
+    ));
+  };
+
   return (
     <div className={`min-h-screen bg-gradient-to-b from-sky-200 via-purple-100 to-pink-100 relative overflow-hidden p-8 ${dyslexicMode ? 'dyslexic-font' : ''}`}>
      <BackgroundElements />
@@ -440,9 +449,8 @@ const LearningUI = ({
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.5 }}
                     >
-                      <div className="text-center text-purple-800 whitespace-pre-line font-medium"
-                           style={getFontStyle()}>
-                        {rhyme}
+                      <div className="text-center text-purple-800 whitespace-pre-line font-medium" style={getFontStyle()}>
+                        {formatRhyme(rhyme)}
                       </div>
                     </motion.div>
                   )}
@@ -491,7 +499,7 @@ const LearningUI = ({
                           : (selectedLanguage === 'spanish' ? 'Haz clic para hablar' : 'Click to Speak')}
                       </motion.button>
 
-                      <div className="flex gap-4">
+                      <motion.div className="flex justify-center gap-4 flex-wrap mt-6">
                         <motion.button
                           onClick={skipLetter}
                           className="flex-1 py-2 px-4 bg-orange-500 text-white rounded-lg flex items-center justify-center gap-2"
@@ -515,7 +523,7 @@ const LearningUI = ({
                           <FastForward className="w-4 h-4" />
                           {selectedLanguage === 'spanish' ? 'Saltar Palabra' : 'Skip Word'}
                         </motion.button>
-                      </div>
+                      </motion.div>
                     </motion.div>
                   )}
                 </>

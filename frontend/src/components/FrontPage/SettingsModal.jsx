@@ -33,6 +33,34 @@ const SettingsModal = ({ showSettings, setShowSettings }) => {
     setSettings(newSettings);
   };
 
+  const saveSettings = async () => {
+    try {
+      const response = await fetch('/api/settings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          age: settings.age,
+          location: {
+            city: settings.location.city,
+            country: settings.location.country
+          }
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to save settings');
+      }
+
+      const data = await response.json();
+      console.log('Settings saved successfully:', data);
+      setShowSettings(false);
+    } catch (error) {
+      console.error('Error saving settings:', error);
+    }
+  };
+
   const customSelectStyles = {
     control: (provided) => ({
       ...provided,
