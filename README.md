@@ -2,12 +2,12 @@
 **An AI-Powered Interactive Word Tutor for Kids Aged 4-12**  
 
 
-## 🌟 Why WordBuddy?  
+## 🌟 Why WordBuddy.ai?  
 ### The Vocabulary Gap: A Silent Barrier to learning and confidence.  
 
 > "Children with limited early vocabulary face lifelong challenges in reading, writing, and communication. Traditional methods often fail to engage young learners, leaving them unprepared for academic success and lacking the confidence to express themselves."
 
-**WordBuddy** addresses this crisis by combining **AI-driven personalization**, **story-driven immersion**, and **gamified learning** to build vocabulary confidence in children aged 4–10.  
+**wordbuddy.ai** addresses this crisis by combining **AI-driven personalization**, **story-driven immersion**, and **gamified learning** to build vocabulary confidence in children aged 4–10.  
 
 ---
 
