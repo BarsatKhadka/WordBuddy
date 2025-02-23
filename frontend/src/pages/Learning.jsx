@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import LearningUI from './LearningUI';
 
 function Learning() {
     const [isGameStarted, setIsGameStarted] = useState(false);
