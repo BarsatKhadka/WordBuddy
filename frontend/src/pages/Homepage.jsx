@@ -157,7 +157,7 @@ function Homepage() {
               fontFamily: settings.dyslexicMode ? "'OpenDyslexic', cursive" : "'Comic Sans MS', cursive",
               textShadow: '3px 3px 0px #ff1493'
             }}>
-              Miami's Super Fun Word Adventure!
+              Super Fun Word Adventure!
             </p>
             <span>🌺</span>
           </motion.div>
