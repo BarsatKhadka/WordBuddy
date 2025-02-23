@@ -121,23 +121,25 @@ function Homepage() {
         </div>
   
         
-        <button
-          className="absolute top-6 right-6 z-10 bg-white/80 backdrop-blur-sm p-3 rounded-full shadow-lg hover:shadow-xl transition-shadow"
-          onClick={() => setShowSettings(true)}
-        >
-          <SettingsIcon className="w-6 h-6 text-indigo-600" />
-        </button>
+        <motion.button
+        className="absolute top-6 right-6 z-10 bg-white/80 backdrop-blur-sm p-3 rounded-full shadow-lg hover:shadow-xl transition-shadow"
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        onClick={() => setShowSettings(true)}
+      >
+        <SettingsIcon className="w-6 h-6 text-indigo-600" />
+      </motion.button>
   
         
         <AnimatePresence>
           {showSettings && (
-            <motion.div
-              className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setShowSettings(false)}
-            >
+             <motion.div 
+             className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center"
+             initial={{ opacity: 0 }}
+             animate={{ opacity: 1 }}
+             exit={{ opacity: 0 }}
+             onClick={(e) => e.target === e.currentTarget && setShowSettings(false)}
+           >
               <motion.div
                 className="bg-white/90 backdrop-blur rounded-3xl shadow-2xl p-8 w-full max-w-md m-4"
                 initial={{ y: 20, opacity: 0 }}
@@ -145,7 +147,7 @@ function Homepage() {
                 exit={{ y: 20, opacity: 0 }}
                 transition={{ type: 'spring', bounce: 0.4 }}
               >
-                <h2 className="text-3xl font-bold mb-8">Settings</h2>
+                
                 <div className="space-y-6">
                   <div>
                     <label className="block text-lg text-indigo-700 mb-3">
@@ -199,6 +201,14 @@ function Homepage() {
                     Dyslexic-Friendly Mode
                   </label>
                   </div>
+                  <motion.button
+                  onClick={() => setShowSettings(false)}
+                  className="w-full py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-lg font-semibold rounded-xl hover:opacity-90 transition-opacity"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  Save Magic Settings ✨
+                </motion.button>
                  
                   </div>
                 </div>
