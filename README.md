@@ -88,7 +88,7 @@ Barsat Khadka (https://www.barsat.dev/)
 
 Rashib Khanal (https://rashib.dev/)
 
-Prasant Koirala (https://prashant-koi.github.io/portfolio/)
+Prasant Koirala (https://www.prasantkoirala.com.np/)
 
 Kshitiz Neupane (https://www.linkedin.com/in/kshitiz-neupane-930571216)
 
